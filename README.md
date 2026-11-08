@@ -58,6 +58,26 @@ validate.py              The validator (runs in CI on every PR)
 
 ---
 
+## Snapshot
+
+A bulk export of one tester's results is published as a **snapshot** — a pointer, not a
+conformance result.
+
+| | |
+|---|---|
+| Latest | [`snapshots/2026-11-08.json`](snapshots/2026-11-08.json) |
+| Archive | [snapshot-20261108.jsonl.gz](https://deepseekbase.com/dsh-conformance/snapshot-20261108.jsonl.gz) |
+| Records | 3,134 with an environment fingerprint |
+| sha256 | `0c1f3257...` (see the snapshot file) |
+
+A snapshot is useful for analysis. It is **not** a substitute for individual verifiable
+submissions — each result still needs its own directory under `results/`.
+
+Records without an environment fingerprint are excluded, because without one they are
+not comparable under DSHIO/T 21.
+
+---
+
 ## What the validator checks
 
 It is deliberately mechanical. It looks at whether the submission is complete and

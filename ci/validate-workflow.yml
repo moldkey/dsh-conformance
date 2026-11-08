@@ -1,0 +1,120 @@
+name: Validate submissions
+
+on:
+  pull_request:
+    paths:
+      - 'results/**'
+      - 'validate.py'
+      - '.github/workflows/validate.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'results/**'
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Collect changed submission directories
+        id: changed
+        if: github.event_name == 'pull_request'
+        run: |
+          git fetch origin ${{ github.base_ref }} --depth=1
+          BASE=$(git merge-base origin/${{ github.base_ref }} HEAD)
+          CHANGED=$(git diff --name-only "$BASE" HEAD -- results/ | sort -u)
+          echo "paths<<EOF" >> $GITHUB_OUTPUT
+          echo "$CHANGED" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+          echo "--- changed ---"
+          echo "$CHANGED"
+
+      - name: Validate changed submissions
+        id: check
+        if: github.event_name == 'pull_request'
+        run: |
+          set +e
+          python3 validate.py --changed ${{ steps.changed.outputs.paths }} > /tmp/out.txt 2>&1
+          CODE=$?
+          cat /tmp/out.txt
+          echo "code=$CODE" >> $GITHUB_OUTPUT
+          exit 0
+
+      - name: Validate all submissions
+        if: github.event_name == 'push'
+        run: python3 validate.py
+
+      - name: Comment on PR
+        if: github.event_name == 'pull_request' && steps.check.outputs.code != '0'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const out = fs.readFileSync('/tmp/out.txt', 'utf8');
+            const body = [
+              '## Submission validation failed',
+              '',
+              'The files are incomplete or inconsistent. See the detail below.',
+              '',
+              '> This check verifies **completeness**, not whether the result is true.',
+              '',
+              '```',
+              out.slice(0, 6000),
+              '```',
+              '',
+              'Format spec: `SUBMISSION-FORMAT.md`',
+            ].join('\n');
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body,
+            });
+            core.setFailed('Validation failed — see comment');
+
+      - name: Label as not-verifiable
+        if: github.event_name == 'pull_request' && steps.check.outputs.code != '0'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              labels: ['not-verifiable'],
+            });
+
+      - name: Comment success
+        if: github.event_name == 'pull_request' && steps.check.outputs.code == '0'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: [
+                '## Validation passed',
+                '',
+                'The submission is complete and internally consistent.',
+                '',
+                '**What this means:** the files are present, the fingerprint matches',
+                'DSHIO/T 21, all five stages are recorded, the run was repeated with',
+                'a consistent verdict, and the tester declared conflicts of interest.',
+                '',
+                '**What this does not mean:** DSHIO has not tested anything, does not',
+                'vouch for the result, and certification does not exist yet',
+                '(DSHIO/T 32 is not in effect).',
+              ].join('\n'),
+            });

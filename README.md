@@ -102,6 +102,40 @@ If any check fails the PR gets the `not-verifiable` label with a per-check expla
 
 ---
 
+## How validation runs
+
+A pull request is validated **automatically** by a webhook, not by GitHub Actions.
+
+| | |
+|---|---|
+| Trigger | `pull_request` (opened / synchronize / reopened) |
+| Endpoint | `https://deepseekbase.com/api/conformance/hook` |
+| What it does | fetches the diff, runs `validate.py` on the changed directories, posts the result |
+| Where you see it | a commit status **`dsh-conformance/validate`** on the PR, plus a comment with the detail |
+
+```mermaid
+flowchart LR
+  A[PR opened] --> B[GitHub webhook]
+  B --> C[validate.py]
+  C --> D{complete?}
+  D -->|yes| E["commit status: success"]
+  D -->|no| F["commit status: failure<br/>+ comment with each failed check"]
+```
+
+### Why not GitHub Actions
+
+Pushing a file under `.github/workflows/` requires a token with the `workflow` scope,
+which is a manual step. A webhook plus the commit-status API only needs the `repo` scope,
+which the repository already has — so the whole chain can be set up programmatically.
+
+For contributors the experience is identical: you open a PR, a check appears, you read
+the result. Nothing to install, nothing to configure on your side.
+
+> `ci/validate-workflow.yml` is kept as an alternative for anyone who prefers a
+> GitHub Actions runner. It is not active by default.
+
+---
+
 ## What a passing submission means
 
 It means: **the files are complete, consistent, and reproducible in principle.**

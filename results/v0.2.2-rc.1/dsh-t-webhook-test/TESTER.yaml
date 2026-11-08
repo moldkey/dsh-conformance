@@ -1,0 +1,33 @@
+# Tester declaration for this submission.
+# Copy of testers/deepseekbase.com/TESTER.yaml.
+
+name: deepseekbase.com
+url: https://deepseekbase.com
+contact: no-reply@deepseekbase.com
+
+scope:
+  stages: [T0, T1, T2, T3, T4]
+  plugin_types: [tool, service, ui, integration, config]
+
+environment:
+  image: dsh-sandbox:5.0
+  image_digest: sha256:d90b02baef228bb105d4817d1a7d23bdd6aec24f463cc7bc3d1fbb2e5af45c10
+  node: "24.11.1"
+  pnpm: "9.15.9"
+  mem: 768m
+  cpu: 1
+
+conflicts:
+  develops_plugins: true
+  plugin_scope: "@liangjiehappy/*"
+  paid_by_author: false
+  result_dependent_fees: false
+  notes: >
+    The operator of deepseekbase.com also develops the @liangjiehappy/* plugin
+    series. This plugin is not part of that series.
+
+declaration: >
+  Self-declares conformance with DSHIO/T 36 and accepts sole responsibility
+  for the accuracy of this result.
+
+declared_at: "2026-11-08"

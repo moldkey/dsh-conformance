@@ -1,0 +1,51 @@
+{
+  "plugin": "dsh-t-webhook-test",
+  "version": "0.0.0",
+  "tested_at": "2026-11-08 06:25:08",
+  "timezone": "+08:00",
+  "baseline_dsh": "0.2.2-rc.1",
+  "standard": "DSHIO/T 20, DSHIO/T 21",
+  "fingerprint": "dsh=0.2.2-rc.1;img=dsh-sandbox:5.0@sha256:d90b02baef228bb105d4817d1a7d23bdd6aec24f463cc7bc3d1fbb2e5af45c00;node=24.11.1;pnpm=9.15.9;mem=768m;cpu=1",
+  "stages": {
+    "static": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    "install": {
+      "exit": 0,
+      "duration": 3.5,
+      "stdout": "\n   ╭───────────────────────────────────────────────────────────────────╮\n   │                                                                   │\n   │                Update available! 9.15.9 → 12.18.0.                │\n   │   Changelog: https://github.com/pnpm/pnpm/releases/tag/v12.18.0   │\n   │                 Run \"pnpm add -g pnpm\" to update.                 │\n   │                                                                   │\n   ╰───────────────────────────────────────────────────────────────────╯\n\nProgress: resolved 1, reused 0, downloaded 0, added 0\nPackages: +1\n+\nProgress: resolved 1, reused 0, downloaded 1, added 1, done\n\ndependencies:\n+ dsh-t 0.0.1\n\nDone in 1.4s using pnpm v9.15.9\n",
+      "stderr": "dsh: initialized profile web at /home/node/.dsh/profiles/web\ndsh: warning: dsh-t declares no dsh.bundle — installed as a plain dependency, not a profile layer\n"
+    },
+    "list": {
+      "exit": 0,
+      "duration": 1.7,
+      "stdout": "Legend: production dependency, optional only, dev only\n\ndsh-profile-web /home/node/.dsh/profiles/web (PRIVATE)\n\ndependencies:\ndsh-t 0.0.1\n",
+      "stderr": ""
+    },
+    "config": {
+      "exit": 0,
+      "duration": 0.7,
+      "stdout": "              analysis, and checks to ground the plan in the actual\n                repository. Do not edit or write files, change configuration,\n                run formatters or code generation that rewrites tracked files,\n                commit, or otherwise carry out the plan. Prefer existing\n                functions and patterns over new machinery.\n\n\n                The tool catalog stays the same across modes for request-cache\n                stability. These plan-mode rules override any later tool\n                description or guidance that suggests using mutation tools;\n                those tools remain listed to keep the tool catalog unchanged. Do\n                not use todo_write to track this planning phase: it tracks\n                implementation after an approved plan, while the plan itself\n                belongs in exit_plan_mode.\n\n\n                Resolve discoverable facts by inspection. Use ask_user_question\n                only for user-owned choices or material ambiguity that\n                inspection cannot answer. Do not ask the user where code lives\n                or how current behavior works when you can find out.\n\n\n                Make the plan decision-complete: state the goal and success\n                criteria; group implementation changes by subsystem; identify\n                public API, schema, and data-flow changes; cover edge cases,\n                failure modes, tests, acceptance criteria, and explicit\n                assumptions. Keep it concise enough to review but detailed\n                enough that another engineer can implement it without making\n                design decisions.\n\n\n                When ready, call exit_plan_mode with the complete plan markdown,\n                starting with a # title. Make exit_plan_mode the only and final\n                tool call in that assistant response: it presents the plan for\n                approval, and implementation begins only in a later step after\n                approval. Do not paste the final plan as a plain reply or ask\n                \"should I proceed?\" through prose or ask_user_question. If\n                review rejects it, incorporate the feedback and present again.\n                If the review channel is unavailable or aborted, stay in plan\n                mode and ask the user to switch modes manually; do not proceed\n                with implementation.\n      - id: compaction\n        name: cordis:group\n        group: true\n        isolate:\n          compaction: true\n          toolResultPruner: true\n        config:\n          - id: compaction-basic\n            name: '@deepseek-ai/dsh-compaction-basic'\n          - id: command-compact\n            name: '@deepseek-ai/dsh-command-compact'\n          - id: tool-result-pruner\n            name: '@deepseek-ai/dsh-compaction-tool-result-pruner'\n            config:\n              thresholdChars: 8192\n              headChars: 4096\n              tailChars: 1024\n      - id: delegation\n        name: cordis:gr",
+      "stdout_truncated": true,
+      "stdout_bytes_total": 5000,
+      "stderr": ""
+    },
+    "boot": {
+      "exit": 0,
+      "duration": 12.4,
+      "stdout": "BOOT_ALIVE\n--- log ---\ndsh web: http://127.0.0.1:3080/?token=m606sROvRGyRLZqO1y9JSyRQfQ4edTbq1i16D2-EbHw\ndsh web: opening the default browser; pass --no-open to disable\n",
+      "stderr": ""
+    }
+  },
+  "verdict": "pass",
+  "repeat": {
+    "count": 2,
+    "verdicts": [
+      "pass",
+      "pass"
+    ],
+    "consistent": true
+  }
+}

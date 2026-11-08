@@ -5,8 +5,8 @@
   "total_results": 3134,
   "format": "jsonl (gzip), one result per line, DSHIO/T 37 compatible fields",
   "archive_url": "https://deepseekbase.com/dsh-conformance/snapshot-20261108.jsonl.gz",
-  "archive_sha256": "0c1f32576d31fa7700166e53bfb4adcbbeec5a12599f9f0aa703544828d57f6f",
-  "archive_bytes": 63443,
+  "archive_sha256": "ed36fcb0235493c0d6d515dfe945b1ea4da72205e72f93e2c84400f7b22b252a",
+  "archive_bytes": 63449,
   "skipped": {
     "no_fingerprint": 7715,
     "no_plugin_name": 0

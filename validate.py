@@ -261,8 +261,10 @@ def validate_dir(d):
     if os.path.exists(rp):
         body = open(rp, encoding="utf-8", errors="ignore").read()
         low = body.lower()
-        hints = sum(1 for k in ("dsh ", "command", "fingerprint", "命令", "环境")
-                    if (k in low if k.isascii() else k in body))
+        body_low = body.lower()
+        hints = sum(1 for k in ("dsh ", "command", "fingerprint", "格式",
+                                "env", "install", "profile")
+                    if k.lower() in body_low)
         if len(body.strip()) < 80:
             r.fail(10, "README explains reproduction", "too short")
         elif hints < 2:

@@ -83,12 +83,12 @@ def _read_yaml_simple(text):
                     break
                 buf.append(nxt.strip())
                 i += 1
-            while stack and stack[-1][0] >= indent:
+            while len(stack) > 1 and stack[-1][0] >= indent:
                 stack.pop()
             stack[-1][1][key] = " ".join(x for x in buf if x)
             continue
 
-        while stack and stack[-1][0] > indent:
+        while len(stack) > 1 and stack[-1][0] > indent:
             stack.pop()
         if ":" not in line:
             # 列表项，忽略（简化处理）

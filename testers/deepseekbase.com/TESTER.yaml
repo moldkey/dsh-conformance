@@ -1,0 +1,39 @@
+# Tester declaration — deepseekbase.com
+#
+# This file registers a testing organization per DSHIO/T 36.
+# It is a SELF-DECLARATION. DSHIO does not approve or accredit testers.
+# DSHIO does not vouch for any result this tester submits.
+
+name: deepseekbase.com
+url: https://deepseekbase.com
+contact: no-reply@deepseekbase.com
+
+scope:
+  stages: [T0, T1, T2, T3, T4]
+  plugin_types: [tool, service, ui, integration, config]
+
+environment:
+  image: dsh-sandbox:5.0
+  image_digest: sha256:d90b02baef228bb105d4817d1a7d23bdd6aec24f463cc7bc3d1fbb2e5af45c10
+  node: "24.11.1"
+  pnpm: "9.15.9"
+  mem: 768m
+  cpu: 1
+
+# ── Conflict of interest (REQUIRED, per DSHIO/T 36 §4.2) ──
+conflicts:
+  develops_plugins: true
+  plugin_scope: "@liangjiehappy/*"
+  paid_by_author: false
+  result_dependent_fees: false
+  notes: >
+    The operator of deepseekbase.com also develops the @liangjiehappy/* plugin
+    series. Per DSHIO/T 36 §4.2, results for those plugins are marked
+    accordingly in each submission's README.
+
+declaration: >
+  This tester self-declares conformance with DSHIO/T 36 and accepts sole
+  responsibility for the accuracy of every result it submits. It acknowledges
+  that DSHIO does not verify, endorse, or arbitrate these results.
+
+declared_at: "2026-11-08"

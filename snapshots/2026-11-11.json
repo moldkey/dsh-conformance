@@ -1,0 +1,15 @@
+{
+  "snapshot_date": "2026-11-11",
+  "tester": "deepseekbase.com",
+  "tester_url": "https://deepseekbase.com",
+  "total_results": 15074,
+  "format": "jsonl (gzip), one result per line, DSHIO/T 37 compatible fields",
+  "archive_url": "https://deepseekbase.com/dsh-conformance/snapshot-20261111.jsonl.gz",
+  "archive_sha256": "f11c289c62819ae98001974b95b3e4652b2660a6a413f1a03ce42d4b92bddb08",
+  "archive_bytes": 389132,
+  "skipped": {
+    "no_fingerprint": 7501,
+    "no_plugin_name": 0
+  },
+  "note": "A snapshot is a pointer, not a conformance result. Individual results still need individual directories under results/ to be verifiable. Records without an environment fingerprint are excluded because they are not comparable under DSHIO/T 21."
+}
